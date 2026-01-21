@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# OS System Files (Mac/Windows)
+.DS_Store
+Thumbs.db
+
+# Editor Config (Optional - se quiser salvar settings, remova esta linha)
+.vscode/
+
+# Documentation (Ignored as requested)
+docs/
+
+# Logs e arquivos temporários
+*.log
+dist/
+tmp/

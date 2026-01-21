@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciar Clientes - Whatsapp</title>
+    <link rel="stylesheet" href="src/style.css" />
+    <script src="src/script.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-gray-50 text-gray-900 selection:bg-whatsapp-light selection:text-white"
+  >
+    <div id="app" class="max-w2xl mx-auto">
+      <!-- Header -->
+      <div
+        class="bg-white rounded-2xl shadow-sm p-6 mb-6 border border-gray-100"
+      >
+        <h1 class="text-2xl font-bold text-gray-800 mb-2 flex items-center">
+          <svg
+            class="w-8 h-8 mr-2 text-green-500"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-4.821 7.454c-1.932 0-3.84-.518-5.516-1.498l-.396-.234-4.102 1.075 1.094-4-0.257-.409c-.994-1.583-1.518-3.414-1.518-5.292 0-5.501 4.475-9.976 9.977-9.976 2.665 0 5.17 1.037 7.053 2.92 1.883 1.883 2.92 4.388 2.92 7.054 0 5.503-4.477 9.978-9.978 9.978m9.13-18.767c-2.438-2.437-5.682-3.78-9.129-3.78-7.11 0-12.895 5.785-12.895 12.896 0 2.272.594 4.49 1.723 6.452l-1.832 6.69 6.845-1.795c1.898 1.035 4.04 1.581 6.216 1.581 0.003 0 0.006 0 0.01 0 7.11 0 12.896-5.786 12.896-12.897 0-3.447-1.343-6.691-3.781-9.129z"
+            />
+          </svg>
+          Lista de Clientes
+        </h1>
+      </div>
+
+      <!--Formulario de registro-->
+      <div
+        class="bg-white rounded-2xl shadow-sm p-6 mb-8 border border-gray-100"
+      >
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label
+              class="block text-xs font-semibold text-gray-500 uppercase mb-1 ml-1"
+              >Nome do Cliente</label
+            >
+            <input
+              type="text"
+              id="clientName"
+              placeholder="Ex: João Silva"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-400 focus:outline-none transition-all"
+            />
+          </div>
+          <div>
+            <label
+              class="block text-xs font-semibold text-gray-500 uppercase mb-1 ml-1"
+              >Telemóvel (Com DDD)</label
+            >
+            <input
+              type="tel"
+              id="clientPhone"
+              placeholder="Ex: 11999999999"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-400 focus:outline-none transition-all"
+            />
+          </div>
+        </div>
+        <button
+          onclick="addClient()"
+          class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition-all shadow-md"
+        >
+          Adicionar Cliente
+        </button>
+      </div>
+
+      <!-- Secção da Lista -->
+        <div class="space-y-4" id="clientList">
+            <!-- Os cartões dos clientes aparecerão aqui -->
+        </div>
+
+        <!-- Estado Vazio -->
+        <div id="emptyState" class="text-center py-12 hidden">
+            <div class="text-gray-300 mb-2">
+                <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            </div>
+            <p class="text-gray-400">Nenhum cliente registado ainda.</p>
+        </div>
+    </div>
+
+    </div>
+    <!-- Modal de Confirmação Customizado -->
+    <div id="deleteModal" class="relative z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <!-- Background backdrop, show/hide based on modal state. -->
+        <div class="fixed inset-0 bg-gray-900/75 backdrop-blur-sm transition-opacity opacity-0 transition-opacity duration-300" id="modalBackdrop"></div>
+      
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+          <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+            <!-- Modal panel -->
+            <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg scale-95 opacity-0 duration-300" id="modalPanel">
+              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                  <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                    <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    </svg>
+                  </div>
+                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                    <h3 class="text-lg font-semibold leading-6 text-gray-900" id="modal-title">Apagar Cliente</h3>
+                    <div class="mt-2">
+                      <p class="text-sm text-gray-500">Tem a certeza que deseja remover <span id="clientNameModal" class="font-bold text-gray-800"></span> da sua lista? Esta ação não pode ser desfeita.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <button type="button" onclick="confirmDeleteAction()" class="inline-flex w-full justify-center rounded-lg bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto transition-colors">
+                    Sim, apagar
+                </button>
+                <button type="button" onclick="closeModal()" class="mt-3 inline-flex w-full justify-center rounded-lg bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto transition-colors">
+                    Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-500 z-50">
+        <div class="bg-gray-800 text-white px-6 py-3 rounded-xl shadow-lg flex items-center space-x-3">
+            <span id="toastIcon">
+                <!-- Icon will be injected via JS -->
+            </span>
+            <p id="toastMessage" class="font-medium text-sm"></p>
+        </div>
+    </div>
+
+    <!-- Scripts no final para melhor performance e Intellisense -->
+    <script src="src/script.js" defer></script>
+  </body>
+</html>
